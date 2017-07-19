@@ -10,16 +10,11 @@ use app\index\model\Specification as SpecificationModel;
 
 class Index extends Controller
 {
-<<<<<<< HEAD
-    public function index(){
-	echo $_SERVER['PATH_INFO'];
-   }
-=======
+
     public function __construct(){
         header("Access-Control-Allow-Origin:*");
     }
 
->>>>>>> a3e2422a6a36bd8a2aed05654663d6ba10f71d47
     public function page(){
         $tag1 = input('tag1', '');
         $tag2 = input('tag2', '');
