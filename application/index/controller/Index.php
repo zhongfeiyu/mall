@@ -10,7 +10,9 @@ use app\index\model\Specification as SpecificationModel;
 
 class Index extends Controller
 {
-
+    public function index(){
+	echo $_SERVER['PATH_INFO'];
+   }
     public function page(){
         $tag1 = input('tag1', '');
         $tag2 = input('tag2', '');
