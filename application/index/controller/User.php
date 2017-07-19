@@ -55,10 +55,13 @@ class User extends Controller
     }
 
     public function cart(){
-        if(($uid = session('uid')) == null) return ['success' => 0, 'err_msg' => '尚未登陆'];
+        $user = input('user', '');
+        if(empty($user)) return ['success' => 0, 'err_msg' => '缺少user'];
         $sm = new SpecificationModel();
         $cm = new CommodityModel();
         $cart = array();
+        if(($u=UserModel::get(['uname'=>$user])) == null) return ['success' => 0, 'err_msg' => 'user不存在'];
+        $uid = $u->uid;
         foreach(CartModel::all(['uid' => $uid]) as $value){
             $specification = $sm->get(['sid' => $value->sid]);
             $commodity = $cm->get(['cid' => $specification->cid]);
@@ -79,16 +82,18 @@ class User extends Controller
     }
 
     public function cartIncre(){
-        if(($uid = session('uid')) == null) return ['success' => 0, 'err_msg' => '尚未登陆'];
+        $user = input('user', '');
 
         $sid = input('sid', '');
         $iAmount = input('iAmount', '');
 
-        if(empty($sid)) return ['success' => 0, 'err_msg' => '缺少sid'];
+        if(empty($user)) return ['success' => 0, 'err_msg' => '缺少user'];
         if(empty($iAmount)) return ['success' => 0, 'err_msg' => '缺少iAmount'];
         if(is_int($sid)) return ['success' => 0, 'err_msg' => 'sid不是整数！'];
         if(is_int($iAmount)) return ['success' => 0, 'err_msg' => 'iAmount不是整数！'];
 
+        if(($u=UserModel::get(['uname'=>$user])) == null) return ['success' => 0, 'err_msg' => 'user不存在'];
+        $uid = $u->uid;
         $cm = new CartModel();
         $sm = new SpecificationModel();
         $c = $cm->get(['uid' => $uid, 'sid' => $sid]);
@@ -102,16 +107,19 @@ class User extends Controller
     }
 
     public function cartDecre(){
-        if(($uid = session('uid')) == null) return ['success' => 0, 'err_msg' => '尚未登陆'];
+        $user = input('user', '');
 
         $sid = input('sid', '');
         $dAmount = input('dAmount', '');
 
+        if(empty($user)) return ['success' => 0, 'err_msg' => '缺少user'];
         if(empty($sid)) return ['success' => 0, 'err_msg' => '缺少sid'];
         if(empty($dAmount)) return ['success' => 0, 'err_msg' => '缺少dAmount'];
         if(is_int($sid)) return ['success' => 0, 'err_msg' => 'sid不是整数！'];
         if(is_int($dAmount)) return ['success' => 0, 'err_msg' => 'dAmount不是整数！'];
 
+        if(($u=UserModel::get(['uname'=>$user])) == null) return ['success' => 0, 'err_msg' => 'user不存在'];
+        $uid = $u->uid;
         $cm = new CartModel();
         $c = $cm->get(['uid' => $uid, 'sid' => $sid]);
         $nowAmount = $c==null ? 0 : $c->amount;
@@ -122,7 +130,10 @@ class User extends Controller
     }
 
     public function cartClear(){
-        if(($uid = session('uid')) == null) return ['success' => 0, 'err_msg' => '尚未登陆'];
+        $user = input('user', '');
+        if(empty($user)) return ['success' => 0, 'err_msg' => '缺少user'];
+        if(($u=UserModel::get(['uname'=>$user])) == null) return ['success' => 0, 'err_msg' => 'user不存在'];
+        $uid = $u->uid;
         CartModel::destroy(['uid' => $uid]);
         return ['success' => 1];
     }
