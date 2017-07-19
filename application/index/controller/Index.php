@@ -10,6 +10,9 @@ use app\index\model\Specification as SpecificationModel;
 
 class Index extends Controller
 {
+    public function __construct(){
+        header("Access-Control-Allow-Origin:*");
+    }
 
     public function page(){
         $tag1 = input('tag1', '');
