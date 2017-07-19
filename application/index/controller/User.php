@@ -10,6 +10,10 @@ use app\index\model\Specification as SpecificationModel;
 
 class User extends Controller
 {
+    public function __construct(){
+        header("Access-Control-Allow-Origin:*");
+    }
+
     public function logout(){
         session('uid', '');
         return ['success' => 1];
